@@ -1,0 +1,344 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>poppy package &#8212; poppy __version__ = &#39;0.2.0&#39; documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Contributing" href="contributing.html" />
+    <link rel="prev" title="poppy" href="modules.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="poppy-package">
+<h1>poppy package<a class="headerlink" href="#poppy-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-poppy.cli">
+<span id="poppy-cli-module"></span><h2>poppy.cli module<a class="headerlink" href="#module-poppy.cli" title="Permalink to this headline">¶</a></h2>
+<p>Console script for poppy.</p>
+</div>
+<div class="section" id="module-poppy.engine">
+<span id="poppy-engine-module"></span><h2>poppy.engine module<a class="headerlink" href="#module-poppy.engine" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="poppy.engine.ConfigDict">
+<em class="property">class </em><code class="descclassname">poppy.engine.</code><code class="descname">ConfigDict</code><a class="reference internal" href="_modules/poppy/engine.html#ConfigDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.ConfigDict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+</dd></dl>
+
+<dl class="class">
+<dt id="poppy.engine.KafkaEngine">
+<em class="property">class </em><code class="descclassname">poppy.engine.</code><code class="descname">KafkaEngine</code><span class="sig-paren">(</span><em>config: poppy.engine.ConfigDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/poppy/engine.html#KafkaEngine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KafkaEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Kafka backend for Queue implementation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – Kombu backend config</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="poppy.engine.KafkaEngine.auto_offset_reset">
+<code class="descname">auto_offset_reset</code><a class="headerlink" href="#poppy.engine.KafkaEngine.auto_offset_reset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get confic for kafka consumer auto offset reset</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KafkaEngine.autocommit">
+<code class="descname">autocommit</code><a class="headerlink" href="#poppy.engine.KafkaEngine.autocommit" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get config for kafka consumer autocommit</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KafkaEngine.blocking_dequeue_timeout">
+<code class="descname">blocking_dequeue_timeout</code><a class="headerlink" href="#poppy.engine.KafkaEngine.blocking_dequeue_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="poppy.engine.KafkaEngine.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/poppy/engine.html#KafkaEngine.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KafkaEngine.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close connections and commit offset</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="poppy.engine.KafkaEngine.dequeue">
+<code class="descname">dequeue</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/poppy/engine.html#KafkaEngine.dequeue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KafkaEngine.dequeue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dequeue a message from the queue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dict with message related key/value information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="poppy.engine.KafkaEngine.enqueue">
+<code class="descname">enqueue</code><span class="sig-paren">(</span><em>message: Dict[str, str]</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/poppy/engine.html#KafkaEngine.enqueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KafkaEngine.enqueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enqueue a message in the queue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> – Dict with key/value information about the message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KafkaEngine.group_id">
+<code class="descname">group_id</code><a class="headerlink" href="#poppy.engine.KafkaEngine.group_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get kafka consumer group ID</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KafkaEngine.raise_on_empty_dequeue">
+<code class="descname">raise_on_empty_dequeue</code><a class="headerlink" href="#poppy.engine.KafkaEngine.raise_on_empty_dequeue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="poppy.engine.KafkaEngine.serializer">
+<em class="property">static </em><code class="descname">serializer</code><span class="sig-paren">(</span><em>x: Dict[str, str]</em><span class="sig-paren">)</span> &#x2192; bytes<a class="reference internal" href="_modules/poppy/engine.html#KafkaEngine.serializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KafkaEngine.serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serializer for kafka messages</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KafkaEngine.servers">
+<code class="descname">servers</code><a class="headerlink" href="#poppy.engine.KafkaEngine.servers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Parse broker URL to extract kafka servers</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="poppy.engine.KombuEngine">
+<em class="property">class </em><code class="descclassname">poppy.engine.</code><code class="descname">KombuEngine</code><span class="sig-paren">(</span><em>config: poppy.engine.ConfigDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/poppy/engine.html#KombuEngine"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KombuEngine" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Kombu backend for Queue implementation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – Kombu backend config</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="poppy.engine.KombuEngine.blocking_dequeue_timeout">
+<code class="descname">blocking_dequeue_timeout</code><a class="headerlink" href="#poppy.engine.KombuEngine.blocking_dequeue_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="poppy.engine.KombuEngine.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/poppy/engine.html#KombuEngine.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KombuEngine.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close connections</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KombuEngine.connection_timeout">
+<code class="descname">connection_timeout</code><a class="headerlink" href="#poppy.engine.KombuEngine.connection_timeout" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="poppy.engine.KombuEngine.dequeue">
+<code class="descname">dequeue</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/poppy/engine.html#KombuEngine.dequeue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KombuEngine.dequeue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dequeue a message from the queue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">A dict with message related key/value information</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="poppy.engine.KombuEngine.enqueue">
+<code class="descname">enqueue</code><span class="sig-paren">(</span><em>message: Dict[str, str]</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/poppy/engine.html#KombuEngine.enqueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.engine.KombuEngine.enqueue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Enqueue a message in the queue</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>message</strong> – Dict with key/value information about the message</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KombuEngine.is_blocking_dequeue">
+<code class="descname">is_blocking_dequeue</code><a class="headerlink" href="#poppy.engine.KombuEngine.is_blocking_dequeue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KombuEngine.raise_on_empty_dequeue">
+<code class="descname">raise_on_empty_dequeue</code><a class="headerlink" href="#poppy.engine.KombuEngine.raise_on_empty_dequeue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="poppy.engine.KombuEngine.serializer">
+<code class="descname">serializer</code><a class="headerlink" href="#poppy.engine.KombuEngine.serializer" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-poppy.messsaging">
+<span id="poppy-messsaging-module"></span><h2>poppy.messsaging module<a class="headerlink" href="#module-poppy.messsaging" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="poppy.messsaging.Queue">
+<em class="property">class </em><code class="descclassname">poppy.messsaging.</code><code class="descname">Queue</code><span class="sig-paren">(</span><em>config: poppy.engine.ConfigDict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/poppy/messsaging.html#Queue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.messsaging.Queue" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Message queue implementation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – Message queue config</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="poppy.messsaging.Queue.close">
+<code class="descname">close</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/poppy/messsaging.html#Queue.close"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.messsaging.Queue.close" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="poppy.messsaging.Queue.dequeue">
+<code class="descname">dequeue</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; str<a class="reference internal" href="_modules/poppy/messsaging.html#Queue.dequeue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.messsaging.Queue.dequeue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="poppy.messsaging.Queue.enqueue">
+<code class="descname">enqueue</code><span class="sig-paren">(</span><em>message: Dict</em><span class="sig-paren">)</span> &#x2192; None<a class="reference internal" href="_modules/poppy/messsaging.html#Queue.enqueue"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.messsaging.Queue.enqueue" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="poppy.messsaging.Queue.get_default_config">
+<em class="property">static </em><code class="descname">get_default_config</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; poppy.engine.ConfigDict<a class="reference internal" href="_modules/poppy/messsaging.html#Queue.get_default_config"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#poppy.messsaging.Queue.get_default_config" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-poppy">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-poppy" title="Permalink to this headline">¶</a></h2>
+<p>Top-level package for poppy.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">poppy</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="readme.html">poppy-cli</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">poppy</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">poppy package</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="contributing.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="authors.html">Credits</a></li>
+<li class="toctree-l1"><a class="reference internal" href="history.html">History</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">poppy</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">poppy</a></li>
+      <li>Next: <a href="contributing.html" title="next chapter">Contributing</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, John Giannelos.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/poppy.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
