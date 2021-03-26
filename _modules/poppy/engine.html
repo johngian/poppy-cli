@@ -36,7 +36,7 @@
 <span></span><span class="kn">import</span> <span class="nn">json</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">Empty</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Union</span>
 
 <span class="kn">from</span> <span class="nn">kafka</span> <span class="kn">import</span> <span class="n">KafkaConsumer</span><span class="p">,</span> <span class="n">KafkaProducer</span>
 <span class="kn">from</span> <span class="nn">kombu.connection</span> <span class="kn">import</span> <span class="n">Connection</span>
@@ -52,8 +52,7 @@
     <span class="n">BROKER_URL</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">QUEUE_NAME</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">CONNECTION_TIMEOUT</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">BLOCKING_DEQUEUE</span><span class="p">:</span> <span class="nb">bool</span>
-    <span class="n">DEQUEUE_TIMEOUT</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">DEQUEUE_TIMEOUT</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span>
     <span class="n">RAISE_ON_EMPTY_DEQUEUE</span><span class="p">:</span> <span class="nb">bool</span>
     <span class="n">CONSUMER_GROUP_ID</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">CONSUMER_AUTOCOMMIT</span><span class="p">:</span> <span class="nb">bool</span>
@@ -62,8 +61,7 @@
 
 <span class="n">DEFAULT_CONFIG</span> <span class="o">=</span> <span class="n">ConfigDict</span><span class="p">(</span>
     <span class="n">CONNECTION_TIMEOUT</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
-    <span class="n">BLOCKING_DEQUEUE</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-    <span class="n">DEQUEUE_TIMEOUT</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+    <span class="n">DEQUEUE_TIMEOUT</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="n">RAISE_ON_EMPTY_DEQUEUE</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
     <span class="n">CONSUMER_AUTOCOMMIT</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
     <span class="n">CONSUMER_AUTO_OFFSET_RESET</span><span class="o">=</span><span class="s2">&quot;earliest&quot;</span><span class="p">,</span>
@@ -100,11 +98,7 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_blocking_dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BLOCKING_DEQUEUE&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">&quot;BLOCKING_DEQUEUE&quot;</span><span class="p">])</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">blocking_dequeue_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">blocking_dequeue_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;DEQUEUE_TIMEOUT&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">&quot;DEQUEUE_TIMEOUT&quot;</span><span class="p">])</span>
 
     <span class="nd">@property</span>
@@ -124,12 +118,10 @@
 <div class="viewcode-block" id="KombuEngine.dequeue"><a class="viewcode-back" href="../../poppy.html#poppy.engine.KombuEngine.dequeue">[docs]</a>    <span class="k">def</span> <span class="nf">dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Dequeue a message from the queue</span>
 
-<span class="sd">        :returns: A dict with message related key/value information</span>
+<span class="sd">        :returns: String with message consumed</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-                <span class="n">block</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">is_blocking_dequeue</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blocking_dequeue_timeout</span>
-            <span class="p">)</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">queue</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">block</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">blocking_dequeue_timeout</span><span class="p">)</span>
             <span class="n">msg</span><span class="o">.</span><span class="n">ack</span><span class="p">()</span>
             <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">body</span>
         <span class="k">except</span> <span class="n">Empty</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
@@ -184,10 +176,6 @@
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Broker URL is misformatted&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">is_blocking_dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BLOCKING_DEQUEUE&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">&quot;BLOCKING_DEQUEUE&quot;</span><span class="p">])</span>
-
-    <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">raise_on_empty_dequeue</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s2">&quot;RAISE_ON_EMPTY_DEQUEUE&quot;</span><span class="p">,</span>
@@ -195,12 +183,14 @@
         <span class="p">)</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">blocking_dequeue_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-        <span class="n">timeout</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
+    <span class="k">def</span> <span class="nf">blocking_dequeue_timeout</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">]:</span>
+        <span class="n">timeout</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
             <span class="s2">&quot;DEQUEUE_TIMEOUT&quot;</span><span class="p">,</span> <span class="n">DEFAULT_CONFIG</span><span class="p">[</span><span class="s2">&quot;DEQUEUE_TIMEOUT&quot;</span><span class="p">]</span>
         <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">timeout</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="k">if</span> <span class="n">timeout</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">timeout</span> <span class="o">*</span> <span class="mi">1000</span>
+        <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="s2">&quot;inf&quot;</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">group_id</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
@@ -234,17 +224,12 @@
 
 <span class="sd">        :returns: A dict with message related key/value information</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
-            <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raise_on_empty_dequeue</span><span class="p">:</span>
-                    <span class="k">raise</span> <span class="n">e</span>
-
-                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_blocking_dequeue</span><span class="p">:</span>
-                    <span class="k">continue</span>
-
-                <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span></div>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">consumer</span><span class="p">)</span><span class="o">.</span><span class="n">value</span>
+        <span class="k">except</span> <span class="ne">StopIteration</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">raise_on_empty_dequeue</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="n">e</span>
+            <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">&quot;</span></div>
 
 <div class="viewcode-block" id="KafkaEngine.close"><a class="viewcode-back" href="../../poppy.html#poppy.engine.KafkaEngine.close">[docs]</a>    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
         <span class="sd">&quot;&quot;&quot;Close connections and commit offset&quot;&quot;&quot;</span>
